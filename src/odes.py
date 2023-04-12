@@ -11,6 +11,8 @@ class ClimateODEs:
         self.gamma = gamma
         self.alpha = alpha
         self.beta = beta
+        # self.innovation_const = 0
+        self.innovation_const = 2e-1
     
     def dr_dt(self, t: float, y: NDArray) -> float:
         r = y[0]
@@ -35,10 +37,22 @@ class ClimateODEs:
         return G_p * (1 - p/A) * p
     
     def dIr_dt(self, t: float, y: NDArray) -> float:
-        return 0
+        # r = y[0]
+        # p = y[1]
+        # I_r = y[2]
+        # I_p = y[3]
+        # c = y[4]
+        return self.innovation_const * self.dr_dt(t, y)
+        # return self.innovation_const * r
     
     def dIp_dt(self, t: float, y: NDArray) -> float:
-        return 0
+        # r = y[0]
+        # p = y[1]
+        # I_r = y[2]
+        # I_p = y[3]
+        # c = y[4]
+        return self.innovation_const * self.dp_dt(t, y)
+        # return self.innovation_const * p
     
     def dc_dt(self, t: float, y: NDArray) -> float:
         r = y[0]
