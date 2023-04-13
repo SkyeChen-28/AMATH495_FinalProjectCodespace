@@ -43,6 +43,8 @@ def check_params(filepath: str) -> tuple:
     beta = params_dict["beta"]
     D = params_dict["D"] # Natural diaster intensity
     f = params_dict["f"] # Disaster frequency: A diaster happens once every f year(s)
+    I_n = params_dict["I_n"]
+    M_p = params_dict["M_p"]
     
     # Enforce variable conditions
     assert K_r > 0, f"K_r = {K_r}: Carrying capacity (K_r) should be a strictly positive float. Please change the value of `K_r` in \"{filepath}\" such that `K_r` > 0"
@@ -53,9 +55,10 @@ def check_params(filepath: str) -> tuple:
     assert D >= 0, f"D = {D}: Disaster intensity (D) should be a non-negative float. Please change the value of `D` in \"{filepath}\" such that `D` >= 0"
     assert f > 0, f"f = {f}: Disaster frequency (f) should be a strictly positive integer. Please change the value of `f` in \"{filepath}\" such that `f` > 0"
     assert isinstance(f, int), f"f = {f}: Disaster frequency (f) should be a strictly positive integer. Please change the value of `f` in \"{filepath}\" such that `f` is an integer"
+    assert I_n >= 0, f"I_n = {I_n}: Innovation constant (I_n) should be a non-negative float. Please change the value of `I_n` in \"{filepath}\" such that `I_n` >= 0"
+    assert 0 <= M_p <= 1, f"M_p = {M_p}: Modernization program (M_p) should be a float between 0 and 1 inclusive. Please change the value of `f` in \"{filepath}\" 0 <= `M_p` <= 1"
     
-    
-    return G_r, G_p, K_r, K_p, gamma, alpha, beta, D, f
+    return G_r, G_p, K_r, K_p, gamma, alpha, beta, D, f, I_n, M_p
        
 
 def run_model(output_dir: str, ICs_filepath: str, params_filepath: str, num_years: int) -> None:
@@ -67,8 +70,8 @@ def run_model(output_dir: str, ICs_filepath: str, params_filepath: str, num_year
     y0 = np.array([r, p, I_r, I_p, c]) # Model is normalized so that all values are in terms of present day values
     
     # Load in system parameter values
-    G_r, G_p, K_r, K_p, gamma, alpha, beta, D, f = check_params(params_filepath)
-    climate = ClimateODEs(G_r, G_p, K_r, K_p, gamma, alpha, beta, D, f)
+    G_r, G_p, K_r, K_p, gamma, alpha, beta, D, f, I_n, M_p = check_params(params_filepath)
+    climate = ClimateODEs(G_r, G_p, K_r, K_p, gamma, alpha, beta, D, f, I_n, M_p)
     
     # Run model year by year
     t = np.array([0])
@@ -96,15 +99,15 @@ def run_model(output_dir: str, ICs_filepath: str, params_filepath: str, num_year
         y[1,-1] -= climate.natural_disaster(year, f, p[-1], c[-1]) # Reduces p
         
     # Plot results
-    all_plots(t, y, num_years, output_dir)
+    xlims = (0, num_years * DAYS_PER_YEAR)
     single_plot(t, r, 
                 output_dir = output_dir,
                 filename = "Rich_GDP.png",
                 num_years = num_years,
                 plt_title = "GDP of richer country over time", 
                 y_axis_title = "GDP relative to initial", 
-                xlims = (0, num_years), 
-                ylims = None
+                xlims = xlims, 
+                ylims = 0
                 )
     single_plot(t, p, 
                 output_dir = output_dir,
@@ -112,7 +115,7 @@ def run_model(output_dir: str, ICs_filepath: str, params_filepath: str, num_year
                 num_years = num_years,
                 plt_title = "GDP of poorer country over time", 
                 y_axis_title = "GDP relative to richer's initial GDP", 
-                xlims = (0, num_years), 
+                xlims = xlims, 
                 ylims = 0,
                 )
     single_plot(t, I_r, 
@@ -121,7 +124,7 @@ def run_model(output_dir: str, ICs_filepath: str, params_filepath: str, num_year
                 num_years = num_years,
                 plt_title = "Innovation of richer country over time", 
                 y_axis_title = "Innovation", 
-                xlims = (0, num_years), 
+                xlims = xlims, 
                 ylims = I_r[0]
                 )
     single_plot(t, I_p, 
@@ -130,7 +133,7 @@ def run_model(output_dir: str, ICs_filepath: str, params_filepath: str, num_year
                 num_years = num_years,
                 plt_title = "Innovation of poorer country over time", 
                 y_axis_title = "Innovation", 
-                xlims = (0, num_years), 
+                xlims = xlims, 
                 ylims = I_p[0]
                 )
     single_plot(t, c, 
@@ -139,9 +142,10 @@ def run_model(output_dir: str, ICs_filepath: str, params_filepath: str, num_year
                 num_years = num_years,
                 plt_title = r"CO$_2$ over time", 
                 y_axis_title = r"CO$_2$ Concentration", 
-                xlims = (0, num_years), 
+                xlims = xlims, 
                 ylims = 0
                 )
+    all_plots(t, y, num_years, output_dir)
     
 
 def main():
@@ -150,7 +154,7 @@ def main():
     parser.add_argument('-o', '--output-dir',
                         help = '[str] The directory to store all program outputs to',
                         type = str,
-                        default = './outputs')
+                        default = './outputs/control')
     parser.add_argument('-i', '--ICs-filepath',
                         help = '[str] The filepath to the initial conditions json file',
                         type = str,

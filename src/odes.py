@@ -3,7 +3,7 @@ from numpy.typing import NDArray
                   
 class ClimateODEs:
     
-    def __init__(self, G_r, G_p, K_r, K_p, gamma, alpha, beta, D, f) -> None:
+    def __init__(self, G_r, G_p, K_r, K_p, gamma, alpha, beta, D, f, I_n, M_p) -> None:
         self.G_r = G_r
         self.G_p = G_p
         self.K_r = K_r
@@ -13,7 +13,8 @@ class ClimateODEs:
         self.beta = beta
         self.D = D
         self.f = f
-        self.innovation_const = 2e-1
+        self.I_n = I_n
+        self.M_p = M_p
     
     def dr_dt(self, t: float, y: NDArray) -> float:
         r = y[0]
@@ -38,22 +39,14 @@ class ClimateODEs:
         return G_p * (1 - p/A) * p
     
     def dIr_dt(self, t: float, y: NDArray) -> float:
-        # r = y[0]
-        # p = y[1]
-        # I_r = y[2]
-        # I_p = y[3]
-        # c = y[4]
-        return self.innovation_const * self.dr_dt(t, y)
-        # return self.innovation_const * r
+        I_n = self.I_n
+        M_p = self.M_p
+        return I_n * self.dr_dt(t, y) * (1 - M_p)
     
     def dIp_dt(self, t: float, y: NDArray) -> float:
-        # r = y[0]
-        # p = y[1]
-        # I_r = y[2]
-        # I_p = y[3]
-        # c = y[4]
-        return self.innovation_const * self.dp_dt(t, y)
-        # return self.innovation_const * p
+        I_n = self.I_n
+        M_p = self.M_p
+        return I_n * (self.dp_dt(t, y) + self.dr_dt(t, y) * M_p)
     
     def dc_dt(self, t: float, y: NDArray) -> float:
         r = y[0]

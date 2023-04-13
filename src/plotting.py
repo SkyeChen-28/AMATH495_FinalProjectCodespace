@@ -22,6 +22,8 @@ def single_plot(t, y, output_dir, filename, num_years, plt_title, y_axis_title, 
     plt.grid(True, which = 'major', color = 'darkgrey')
     
     # Save plot
+    if (not os.path.exists(output_dir)):
+        os.makedirs(output_dir)
     plt.savefig(f'{output_dir}/{filename}', dpi = DPI_VAL)
     plt.close()
     
@@ -95,9 +97,11 @@ def all_plots(t, y, num_years, output_dir, num_ticks = 8, DPI_VAL = 500):
     
     # Show the plot
     if (not os.path.exists(output_dir)):
-        os.mkdir(output_dir)
+        os.makedirs(output_dir)
     fig.tight_layout(rect = (0,0,0.95,1), h_pad = -1)
     fig.set_size_inches((8.5, 11), forward = False)
     fig.savefig(f'{output_dir}/all_plots.png', dpi = DPI_VAL)
     # fig.show()
     # print()
+    
+    fig.clear()

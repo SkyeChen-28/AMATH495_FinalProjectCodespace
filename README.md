@@ -1,5 +1,7 @@
 # AMATH 495 Final Project
 
+A repository for all code used for my AMATH 495 Final Project
+
 ## Dependencies
 
 Use the command below to install program dependencies:
