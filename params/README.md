@@ -1,5 +1,7 @@
 # What do these variables mean?
 
+## Initial Values (initial_conditions.json)
+
 ```math
 \begin{align*}
     r &= \text{The GDP of the richer, developed country. Must be non-negative}
@@ -7,7 +9,13 @@
     p &= \text{The GDP of the poorer developing country. Must be non-negative}
     \\
     c &= \text{The concentration of CO$_2$ in the atmosphere. Must be non-negative}
-    \\
+\end{align*}
+```
+
+## ODE System Parameter Values (ODE_params.json)
+
+```math
+\begin{align*}
     G_r &: \text{Growth rate of the richer country's GDP.}
     \\
     G_p &: \text{Growth rate of the poorer country's GDP.}
