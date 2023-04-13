@@ -95,6 +95,7 @@ def run_model(output_dir: str, ICs_filepath: str, params_filepath: str, num_year
         y[0,-1] -= climate.natural_disaster(year, f, r[-1], c[-1]) # Reduces r
         y[1,-1] -= climate.natural_disaster(year, f, p[-1], c[-1]) # Reduces p
         
+    # Plot results
     single_plot(t, r, 
                 output_dir = output_dir,
                 filename = "Rich_GDP.png",

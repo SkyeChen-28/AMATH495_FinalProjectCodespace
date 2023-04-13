@@ -3,9 +3,6 @@ import matplotlib.pyplot as plt
 import os
 from src.constants import X_AXIS_TITLE, DAYS_PER_YEAR
 
-
-
-# Plot each variable individually
 def single_plot(t, y, output_dir, filename, num_years, plt_title, y_axis_title, xlims, ylims, num_ticks = 8, DPI_VAL = 500, **kwargs):
 
     # Common plot parameters
@@ -33,7 +30,6 @@ def single_plot(t, y, output_dir, filename, num_years, plt_title, y_axis_title, 
     # print()
     
 def all_plots(t, y, num_years, output_dir, num_ticks = 8, DPI_VAL = 500):
-# def all_plots(t, y, num_years, output_dir, **kwargs):
     
     # Common plot parameters
     xticks = np.arange(0, num_years+1, num_years//num_ticks) * DAYS_PER_YEAR
@@ -54,7 +50,6 @@ def all_plots(t, y, num_years, output_dir, num_ticks = 8, DPI_VAL = 500):
     
     # Plot all results
     fig, axs = plt.subplots(3, 1) # Landscape plots
-    # fig, axs = plt.subplots(1, 3) # Portrait plots
     
     # Modifications common to all plots
     for ax in axs:

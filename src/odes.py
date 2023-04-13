@@ -13,7 +13,6 @@ class ClimateODEs:
         self.beta = beta
         self.D = D
         self.f = f
-        # self.innovation_const = 0
         self.innovation_const = 2e-1
     
     def dr_dt(self, t: float, y: NDArray) -> float:
