@@ -69,27 +69,29 @@ def all_plots(t, y, num_years, output_dir, num_ticks = 8, DPI_VAL = 500):
     axs[GDP_idx].plot(t, p, label = POOR_COUNTRY, color = poor_col, linestyle = poor_linestyle)
     axs[GDP_idx].set_title("GDP over time")
     axs[GDP_idx].set_ylabel("GDP")
-    axs[GDP_idx].set_xlim(0)
-    axs[GDP_idx].set_ylim(0)
+    # axs[GDP_idx].set_xlim(0)
+    # axs[GDP_idx].set_ylim(0)
     
     # Plot innovation
     axs[innovation_idx].plot(t, I_r, label = RICH_COUNTRY, color = rich_col)
     axs[innovation_idx].plot(t, I_p, label = POOR_COUNTRY, color = poor_col, linestyle = poor_linestyle)
     axs[innovation_idx].set_title("Innovation over time")
     axs[innovation_idx].set_ylabel("Innovation")
-    axs[innovation_idx].set_xlim(0)
-    axs[innovation_idx].set_ylim(0)
+    # axs[innovation_idx].set_xlim(0, num_years)
+    # axs[innovation_idx].set_ylim(0)
     
     # Plot CO2 concentration
     axs[CO2_idx].plot(t, c, label = "Global", color = glob_col)
     axs[CO2_idx].set_title(r"CO$_2$ over time")
     axs[CO2_idx].set_ylabel(r"CO$_2$ Concentration")  
-    axs[CO2_idx].set_xlim(0)
-    axs[CO2_idx].set_ylim(0)
+    # axs[CO2_idx].set_xlim(0)
+    # axs[CO2_idx].set_ylim(0)
     
     # More common mods after labels have been added
     for ax in axs:
         ax.legend()
+        ax.set_xlim(0, num_years * DAYS_PER_YEAR)
+        ax.set_ylim(0)
     
     # Show the plot
     if (not os.path.exists(output_dir)):

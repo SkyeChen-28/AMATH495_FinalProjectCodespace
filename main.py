@@ -96,13 +96,14 @@ def run_model(output_dir: str, ICs_filepath: str, params_filepath: str, num_year
         y[1,-1] -= climate.natural_disaster(year, f, p[-1], c[-1]) # Reduces p
         
     # Plot results
+    all_plots(t, y, num_years, output_dir)
     single_plot(t, r, 
                 output_dir = output_dir,
                 filename = "Rich_GDP.png",
                 num_years = num_years,
                 plt_title = "GDP of richer country over time", 
                 y_axis_title = "GDP relative to initial", 
-                xlims = 0, 
+                xlims = (0, num_years), 
                 ylims = None
                 )
     single_plot(t, p, 
@@ -111,7 +112,7 @@ def run_model(output_dir: str, ICs_filepath: str, params_filepath: str, num_year
                 num_years = num_years,
                 plt_title = "GDP of poorer country over time", 
                 y_axis_title = "GDP relative to richer's initial GDP", 
-                xlims = 0, 
+                xlims = (0, num_years), 
                 ylims = 0,
                 )
     single_plot(t, I_r, 
@@ -120,7 +121,7 @@ def run_model(output_dir: str, ICs_filepath: str, params_filepath: str, num_year
                 num_years = num_years,
                 plt_title = "Innovation of richer country over time", 
                 y_axis_title = "Innovation", 
-                xlims = 0, 
+                xlims = (0, num_years), 
                 ylims = I_r[0]
                 )
     single_plot(t, I_p, 
@@ -129,7 +130,7 @@ def run_model(output_dir: str, ICs_filepath: str, params_filepath: str, num_year
                 num_years = num_years,
                 plt_title = "Innovation of poorer country over time", 
                 y_axis_title = "Innovation", 
-                xlims = 0, 
+                xlims = (0, num_years), 
                 ylims = I_p[0]
                 )
     single_plot(t, c, 
@@ -138,10 +139,9 @@ def run_model(output_dir: str, ICs_filepath: str, params_filepath: str, num_year
                 num_years = num_years,
                 plt_title = r"CO$_2$ over time", 
                 y_axis_title = r"CO$_2$ Concentration", 
-                xlims = 0, 
+                xlims = (0, num_years), 
                 ylims = 0
                 )
-    all_plots(t, y, num_years, output_dir)
     
 
 def main():
@@ -162,7 +162,7 @@ def main():
     parser.add_argument('-n', '--num-years',
                         help = 'The number of years to run the simulation for',
                         type = int,
-                        default = 40)
+                        default = 50)
     
     # Parse CLI variables
     args = parser.parse_args()
