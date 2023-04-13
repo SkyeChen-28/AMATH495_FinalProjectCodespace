@@ -155,3 +155,7 @@ cython_debug/
 # Ignore folders
 .vscode/
 outputs/
+
+# Ignore files
+test.py
+*.code-workspace
