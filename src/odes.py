@@ -3,7 +3,7 @@ from numpy.typing import NDArray
                   
 class ClimateODEs:
     
-    def __init__(self, G_r, G_p, K_r, K_p, gamma, alpha, beta) -> None:
+    def __init__(self, G_r, G_p, K_r, K_p, gamma, alpha, beta, D, f) -> None:
         self.G_r = G_r
         self.G_p = G_p
         self.K_r = K_r
@@ -11,6 +11,8 @@ class ClimateODEs:
         self.gamma = gamma
         self.alpha = alpha
         self.beta = beta
+        self.D = D
+        self.f = f
         # self.innovation_const = 0
         self.innovation_const = 2e-1
     
@@ -74,4 +76,14 @@ class ClimateODEs:
         I_p = self.dIp_dt(t, y)
         c = self.dc_dt(t, y)
         return np.array([r, p, I_r, I_p, c])
+    
+    def natural_disaster(self, year, f, GDP, c):
+        '''
+            Returns how much to reduce GDP by after the disaster
+        '''
+        D = self.D
+        if ((year != 0) and (year % f == 0)):
+            return 0.9 * GDP * (1 - np.exp(- D*c / GDP**2)) # Reduces r
+        else:
+            return 0
         
