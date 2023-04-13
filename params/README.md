@@ -4,11 +4,11 @@
 
 ```math
 \begin{align*}
-    r &= \text{The GDP of the richer, developed country. Must be non-negative}
+    r &: \text{The GDP of the richer, developed country. Must be non-negative}
     \\
-    p &= \text{The GDP of the poorer developing country. Must be non-negative}
+    p &: \text{The GDP of the poorer developing country. Must be non-negative}
     \\
-    c &= \text{The concentration of CO$_2$ in the atmosphere. Must be non-negative}
+    c &: \text{The concentration of CO$_2$ in the atmosphere. Must be non-negative}
 \end{align*}
 ```
 
