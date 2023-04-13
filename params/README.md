@@ -34,5 +34,10 @@
     \\
     f &: \text{Global disaster frequency. Must be a strictly positive integer.}
     \\
+    I_n &: \text{Innovation growth rate. Must be non-negative}
+    \\
+    M_p &: \text{Modernization program: The amount of innovation that the richer country donates
+    } \\ &\text{\quad \quad
+    to the poorer country to help them moderize. Must be between 0 and 1 inclusive}    
 \end{align*}
 ```
