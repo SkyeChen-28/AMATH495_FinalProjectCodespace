@@ -1,7 +1,6 @@
-import os
+import argparse
 import json
 import numpy as np
-import scipy as sp
 from scipy.integrate import solve_ivp
 from src.odes import ClimateODEs
 from src.plotting import single_plot, all_plots
@@ -23,8 +22,8 @@ def check_ICs(filepath: str) -> tuple:
     c = ICs_dict["c"]
     
     # Enforce variable conditions
-    assert r > 0, f"r = {r}: GDP (r) should be a strictly positive float. Please change the value of `r` in \"{filepath}\" such that r > 0"
-    assert p > 0, f"p = {p}: GDP (p) should be a strictly positive. Please change the value of `p` in \"{filepath}\" such that p > 0"
+    assert r >= 0, f"r = {r}: GDP (r) should be a non-negative float. Please change the value of `r` in \"{filepath}\" such that r >= 0"
+    assert p >= 0, f"p = {p}: GDP (p) should be a non-negative float. Please change the value of `p` in \"{filepath}\" such that p >= 0"
     assert c >= 0, f"c = {c}: CO2 concentration (c) should be a non-negative float. Please change the value of `c` in \"{filepath}\" such that c >= 0"
     
     return r, p, c
@@ -48,9 +47,13 @@ def check_params(filepath: str) -> tuple:
     # Enforce variable conditions
     assert K_r > 0, f"K_r = {K_r}: Carrying capacity (K_r) should be a strictly positive float. Please change the value of `K_r` in \"{filepath}\" such that `K_r` > 0"
     assert K_p > 0, f"K_p = {K_p}: Carrying capacity (K_p) should be a strictly positive float. Please change the value of `K_p` in \"{filepath}\" such that `K_p` > 0"
-    assert gamma > 0, f"gamma = {gamma}: CO2 Emission rate (gamma) should be a strictly positive float. Please change the value of `gamma` in \"{filepath}\" such that `gamma` > 0"
+    assert gamma >= 0, f"gamma = {gamma}: CO2 Emission rate (gamma) should be a non-negative float. Please change the value of `gamma` in \"{filepath}\" such that `gamma` >= 0"
     assert alpha > 0, f"alpha = {alpha}: CO2 Emission efficiency (alpha) should be a strictly positive float. Please change the value of `alpha` in \"{filepath}\" such that `alpha` > 0"
     assert beta > 0, f"beta = {beta}: CO2 Emission rate (beta) should be a strictly positive float. Please change the value of `beta` in \"{filepath}\" such that `beta` > 0"
+    assert D >= 0, f"D = {D}: Disaster intensity (D) should be a non-negative float. Please change the value of `D` in \"{filepath}\" such that `D` >= 0"
+    assert f > 0, f"f = {f}: Disaster frequency (f) should be a strictly positive integer. Please change the value of `f` in \"{filepath}\" such that `f` > 0"
+    assert isinstance(f, int), f"f = {f}: Disaster frequency (f) should be a strictly positive integer. Please change the value of `f` in \"{filepath}\" such that `f` is an integer"
+    
     
     return G_r, G_p, K_r, K_p, gamma, alpha, beta, D, f
        
@@ -141,14 +144,31 @@ def run_model(output_dir: str, ICs_filepath: str, params_filepath: str, num_year
     
 
 def main():
-    # CLI Values
-    output_dir = "outputs"
-    ICs_filepath = "params/initial_conditions.json"
-    params_filepath = "params/ODE_params.json"
+    # The CLI parser
+    parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser.add_argument('-o', '--output-dir',
+                        help = '[str] The directory to store all program outputs to',
+                        type = str,
+                        default = './outputs')
+    parser.add_argument('-i', '--ICs-filepath',
+                        help = '[str] The filepath to the initial conditions json file',
+                        type = str,
+                        default = './params/initial_conditions.json')
+    parser.add_argument('-p', '--params-filepath',
+                        help = '[str] The filepath to the ODE system parameters json file',
+                        type = str,
+                        default = './params/ODE_params.json')
+    parser.add_argument('-n', '--num-years',
+                        help = 'The number of years to run the simulation for',
+                        type = int,
+                        default = 40)
     
-    # Define timeframe
-    # num_years = 80
-    num_years = 40
+    # Parse CLI variables
+    args = parser.parse_args()
+    output_dir = args.output_dir
+    ICs_filepath = args.ICs_filepath
+    params_filepath = args.params_filepath
+    num_years = args.num_years
     
     run_model(output_dir = output_dir, 
               ICs_filepath = ICs_filepath, 
