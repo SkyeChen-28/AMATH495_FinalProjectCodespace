@@ -175,6 +175,11 @@ def main():
     params_filepath = args.params_filepath
     num_years = args.num_years
     
+    # output_dir = './outputs/control'
+    # ICs_filepath = './params/initial_conditions.json'
+    # params_filepath = './params/ODE_params.json'
+    # num_years = 50
+    
     run_model(output_dir = output_dir, 
               ICs_filepath = ICs_filepath, 
               params_filepath = params_filepath, 
