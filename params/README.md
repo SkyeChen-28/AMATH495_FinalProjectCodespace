@@ -1,6 +1,6 @@
 # What do these variables mean?
 
-```{math}
+```math
 \begin{align*}
     G_r &: \text{Growth rate of the richer country's GDP}
     \\
