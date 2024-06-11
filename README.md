@@ -2,7 +2,15 @@
 
 A repository for all code used for my AMATH 495 Final Project. [Final project deliverable document](https://github.com/SkyeChen-28/AMATH495_FinalProjectCodespace/blob/main/AMATH_495___Final_Project_Deliverable.pdf)
 
-## Dependencies
+## Summary of Model
+
+This is a "toy model" of the global economy and how it is affected by, and affects the global climate system. The model assumes only two countries exist, a rich developed nation, and a developing nation. Both nations GDP's are modelled using a logistics curve where the developed economy will have an initial condition closer to it’s carrying capacity allowing it to grow approximately linearly, and the developing economy will have an initial condition significantly less than it’s carrying capacity allowing it to grow exponentially. The developed economy starts with a GDP much larger than the developing economy. Both countries emit CO2 proportional to their current GDP.
+Once a year, a global natural disaster happens and it reduces the GDP of both countries. The impact to GDP is inversely propotional to the current GDP of each country, and proportional to the current total amount of CO2 in the atmosphere.
+The model will produce plots on how CO2 levels change over time as well as how the GDP of each country changes over time.
+
+## Running the Program
+
+### Dependencies
 
 Use the command below to install program dependencies:
 
@@ -10,7 +18,7 @@ Use the command below to install program dependencies:
 pip install -r requirements.txt
 ```
 
-## Usage
+### Usage
 
 The program will use default arguments if you simply run
 
