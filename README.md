@@ -1,6 +1,6 @@
 # AMATH 495 Final Project
 
-A repository for all code used for my AMATH 495 Final Project
+A repository for all code used for my AMATH 495 Final Project. [Final project deliverable document](https://github.com/SkyeChen-28/AMATH495_FinalProjectCodespace/blob/main/AMATH_495___Final_Project_Deliverable.pdf)
 
 ## Dependencies
 
